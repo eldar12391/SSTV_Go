@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SSTV</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+<div class="app">
+
+  <header class="header">
+    <span class="header__logo">SSTV</span>
+    <span class="header__mode">Martin M1 · 320×256 · ~114 s</span>
+    <span class="header__spacer"></span>
+    <a class="header__link" href="https://github.com/h1nezo/sstv" target="_blank">GitHub ↗</a>
+  </header>
+
+  <main class="workspace">
+
+    <!-- TX -->
+    <section class="pane" aria-label="Кодирование">
+      <span class="label">TX — Изображение → Аудио</span>
+
+      <div class="dropzone" id="tx-drop" role="button" tabindex="0">
+        <input type="file" id="tx-file" accept="image/*" />
+        <div class="dropzone__icon">↓</div>
+        <div class="dropzone__hint">перетащите изображение · или выберите файл</div>
+      </div>
+
+      <div id="tx-preview"></div>
+
+      <div class="settings" aria-label="Настройки кодирования">
+        <span class="label">Настройки</span>
+        <div class="settings__grid">
+          <label class="field">
+            <span>Формат вывода</span>
+            <select id="tx-audio-format">
+              <option value="wav" selected>WAV</option>
+              <option value="mp3">MP3</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Частота дискретизации</span>
+            <select id="tx-sample-rate">
+              <option value="8000">8000 Hz</option>
+              <option value="11025">11025 Hz</option>
+              <option value="22050">22050 Hz</option>
+              <option value="32000">32000 Hz</option>
+              <option value="44100" selected>44100 Hz</option>
+              <option value="48000">48000 Hz</option>
+            </select>
+          </label>
+          <label class="field" id="tx-mp3-bitrate-wrap">
+            <span>Битрейт MP3</span>
+            <select id="tx-mp3-bitrate" disabled>
+              <option value="96">96 kbps</option>
+              <option value="128">128 kbps</option>
+              <option value="160">160 kbps</option>
+              <option value="192" selected>192 kbps</option>
+              <option value="256">256 kbps</option>
+              <option value="320">320 kbps</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <span class="status" id="tx-status" data-type="idle">ожидание</span>
+      <div class="progress" id="tx-progress"></div>
+
+      <div class="divider"></div>
+
+      <div class="canvas-wrap">
+        <span class="canvas-wrap__label">форма сигнала</span>
+        <canvas id="tx-wave"></canvas>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn--primary" id="btn-encode" disabled>Кодировать и скачать аудио</button>
+      </div>
+    </section>
+
+    <!-- RX -->
+    <section class="pane" aria-label="Декодирование">
+      <span class="label">RX — Аудио → Изображение</span>
+
+      <div class="dropzone" id="rx-drop" role="button" tabindex="0">
+        <input type="file" id="rx-file" accept="audio/wav,audio/*" />
+        <div class="dropzone__icon">↓</div>
+        <div class="dropzone__hint">перетащите WAV/MP3 · или выберите файл</div>
+      </div>
+
+      <div class="settings" aria-label="Настройки декодирования">
+        <span class="label">Настройки</span>
+        <div class="settings__grid settings__grid--2">
+          <label class="field">
+            <span>Ширина выхода</span>
+            <input id="rx-out-width" type="number" min="64" max="2048" step="1" value="320" />
+          </label>
+          <label class="field">
+            <span>Высота выхода</span>
+            <input id="rx-out-height" type="number" min="64" max="2048" step="1" value="256" />
+          </label>
+          <label class="field">
+            <span>Скорость отрисовки</span>
+            <select id="rx-render-speed">
+              <option value="3">Медленно</option>
+              <option value="6" selected>Нормально</option>
+              <option value="12">Быстро</option>
+              <option value="10000">Мгновенно</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <span class="status" id="rx-status" data-type="idle">ожидание</span>
+      <div class="progress" id="rx-progress"></div>
+
+      <div class="divider"></div>
+
+      <div class="rx-frame" id="rx-frame">
+        <span id="rx-placeholder">нет сигнала</span>
+        <canvas id="rx-canvas" aria-label="декодированное изображение"></canvas>
+      </div>
+
+      <span id="rx-meta"></span>
+
+      <div class="btn-row">
+        <button class="btn btn--primary" id="btn-decode" disabled>Декодировать</button>
+        <button class="btn" id="btn-dl-img" disabled>Скачать PNG</button>
+      </div>
+    </section>
+
+  </main>
+</div>
+<script type="module" src="/static/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+services:
+  sstv:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: sstv-go:latest
+    container_name: sstv-go
+    ports:
+      - "8080:8080"
+    command: ["-addr", ":8080"]
